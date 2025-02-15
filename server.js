@@ -4,6 +4,8 @@ const express = require('express') // loads express so it can be used
 const mongoose = require("mongoose")
 const methodOverride = require("method-override")
 const morgan = require("morgan")
+const path = require("path");
+
 
 
 
@@ -20,6 +22,7 @@ const Cheese = require("./models/cheese.js");
 
 app.use(express.urlencoded({ extended: false })); //this is middleware that reads the data
 app.use(methodOverride("_method")); 
+app.use(express.static(path.join(__dirname, "public")));
 // app.use(morgan("dev")) //
 
 
