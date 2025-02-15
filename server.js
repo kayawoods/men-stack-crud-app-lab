@@ -6,17 +6,24 @@ const mongoose = require("mongoose")
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI)
 
 mongoose.connection.on("connected", () => {
-    console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
-  });
+    console.log(`Connected to MongoDB ${mongoose.connection.name}.`)
+  })
+
+  const Cheese = require("./models/cheese.js");
 
 // GET /
 app.get("/", async (req, res) => {
     res.render("index.ejs");
-  });
+  })
+
+// GET /fruits/new
+app.get("/cheeses/new", (req, res) => {
+    res.render("cheeses/new.ejs");
+  })
 
 app.listen(3000, () => {
   console.log('Listening on port 3000');
-});
+})

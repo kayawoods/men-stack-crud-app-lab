@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 
-const fruitSchema = new mongoose.Schema({
+const cheeseSchema = new mongoose.Schema({
   name: String,
   isStinky: Boolean,
 });
+
+const Cheese = mongoose.model("Cheese", cheeseSchema)
+
+module.exports = Cheese
