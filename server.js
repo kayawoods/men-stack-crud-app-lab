@@ -1,11 +1,13 @@
 const dotenv = require("dotenv")
 dotenv.config()
-const express = require('express')
+const express = require('express') // loads express so it can be used 
 const mongoose = require("mongoose")
+const methodOverride = require("method-override")
+const morgan = require("morgan")
 
 
 
-const app = express();
+const app = express(); // creates an express app so it a route can be defined
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -17,21 +19,29 @@ const Cheese = require("./models/cheese.js");
 
 
 app.use(express.urlencoded({ extended: false })); //this is middleware that reads the data
+app.use(methodOverride("_method")); 
+app.use(morgan("dev"))
 
-// GET /
+
 app.get("/", async (req, res) => {
     res.render("index.ejs");
-})
-
-// GET /fruits/new
-app.get("/cheeses/new", (req, res) => {
-    res.render("cheeses/new.ejs");
 })
 
 app.get("/cheeses", async (req, res) => {
     const allCheeses = await Cheese.find()
     res.render("cheeses/index.ejs", { cheeses: allCheeses})
   });
+
+
+app.get("/cheeses/new", (req, res) => {
+    res.render("cheeses/new.ejs");
+})
+
+app.get("/cheeses/:cheeseId", async (req, res) => {
+    const foundCheese = await Cheese.findById(req.params.cheeseId)
+    res.render("cheeses/show.ejs", { cheese: foundCheese })
+  })
+
 
 app.post("/cheeses", async (req, res) => {
     if (req.body.isStinky === "on") {
@@ -43,7 +53,10 @@ app.post("/cheeses", async (req, res) => {
     res.redirect("/cheeses")
 })
 
-
+app.delete("/cheeses/:cheeseId", async (req, res) => {
+    await Cheese.findByIdAndDelete(req.params.cheeseId)
+    res.redirect("/cheeses")
+  })
 
 app.listen(3000, () => {
     console.log('Listening on port 3000');

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= cheese.name %></title> 
+  </head>
+  <body>
+    <h1><%= cheese.name %></h1>
+    <% if (cheese.isStinky) { %>
+        <p>This cheese is extremely stinky.</p>
+      <% } else { %>
+        <p>This cheese is NOT STINKY. </p>
+      <% } %>
+      <form action="/cheeses/<%=cheese._id%>?_method=DELETE" method="POST">
+        <button type="submit">Delete <%= cheese.name %></button>
+      </form>
+      <a href="/cheeses/">Back to Cheeses</a>
+  </body>
+</html>
